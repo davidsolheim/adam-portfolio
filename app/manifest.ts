@@ -1,16 +1,17 @@
 import { MetadataRoute } from "next"
 
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "My App"
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Adam Hinckley"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: siteName,
+    name: `${siteName} Portfolio`,
     short_name: siteName,
-    description: "A Next.js starter template with authentication, database, and modern tooling",
+    description:
+      "Portfolio of Adam Hinckley, senior frontend engineer focused on product outcomes.",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#000000",
+    background_color: "#090b11",
+    theme_color: "#090b11",
     icons: [
       {
         src: "/icon-dark-32x32.png",

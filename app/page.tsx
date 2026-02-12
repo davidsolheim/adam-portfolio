@@ -1,48 +1,104 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Reveal } from "@/components/portfolio/reveal"
+import { ProjectCard } from "@/components/portfolio/project-card"
+import { SectionHeading } from "@/components/portfolio/section-heading"
+import { SiteFrame } from "@/components/portfolio/site-frame"
+import { Timeline } from "@/components/portfolio/timeline"
+import { portfolioContent } from "@/lib/content/portfolio"
 
-export default function Home() {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "My App"
+export default function HomePage() {
+  const featuredPreview = portfolioContent.featuredProjects.slice(0, 3)
+  const timelinePreview = portfolioContent.timeline.slice(0, 2)
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <CardTitle className="text-4xl">{siteName}</CardTitle>
-          <CardDescription className="text-lg">
-            A Next.js starter template with authentication, database, and modern tooling
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold">Features</h3>
-            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-              <li>Next.js 16 with App Router</li>
-              <li>Drizzle ORM with Neon PostgreSQL</li>
-              <li>NextAuth.js v5 authentication</li>
-              <li>Resend email integration</li>
-              <li>Stripe payment integration</li>
-              <li>Tailwind CSS 4 + shadcn/ui components</li>
-              <li>TypeScript</li>
-            </ul>
+    <SiteFrame>
+      <section className="hero-block">
+        <Reveal>
+          <p className="hero-eyebrow">{portfolioContent.hero.eyebrow}</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <h1 className="hero-title">{portfolioContent.hero.title}</h1>
+        </Reveal>
+        <Reveal delay={160}>
+          <p className="hero-subtitle">{portfolioContent.hero.subtitle}</p>
+        </Reveal>
+        <Reveal delay={240}>
+          <div className="hero-actions">
+            <Link href="/contact" className="button-primary">
+              {portfolioContent.hero.ctaPrimary}
+            </Link>
+            <Link href="/work" className="button-ghost">
+              {portfolioContent.hero.ctaSecondary}
+            </Link>
           </div>
-          <div className="flex gap-4 pt-4">
-            <Button asChild>
-              <Link href="/admin">Admin Dashboard</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Documentation
-              </a>
-            </Button>
+        </Reveal>
+      </section>
+
+      <Reveal>
+        <section className="proof-grid" aria-label="Selected outcomes">
+          {portfolioContent.proofStats.map((stat, index) => (
+            <article key={stat.label} className={`proof-card proof-${index + 1}`}>
+              <p>{stat.value}</p>
+              <h3>{stat.label}</h3>
+              <span>{stat.detail}</span>
+            </article>
+          ))}
+        </section>
+      </Reveal>
+
+      <section className="section-block">
+        <Reveal>
+          <SectionHeading
+            kicker="Selected Work"
+            title="Shipping customer-critical interfaces with measurable business impact"
+            description="From conversion workflows to marketplace UX, the work emphasizes clarity, speed, and repeatable engineering systems."
+          />
+        </Reveal>
+
+        <div className="project-grid three-up">
+          {featuredPreview.map((project, index) => (
+            <Reveal key={project.name} delay={index * 90}>
+              <ProjectCard project={project} />
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={240}>
+          <div className="section-action">
+            <Link href="/work" className="button-ghost">
+              View all project details
+            </Link>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </Reveal>
+      </section>
+
+      <section className="section-block">
+        <Reveal>
+          <SectionHeading
+            kicker="Career Snapshot"
+            title="Operator mindset with product and engineering depth"
+            description="A blend of startup execution, enterprise delivery, and leadership through ambiguity."
+          />
+        </Reveal>
+        <Reveal delay={120}>
+          <Timeline entries={timelinePreview} />
+        </Reveal>
+      </section>
+
+      <Reveal>
+        <section className="cta-band">
+          <p>{portfolioContent.person.availability}</p>
+          <h2>Building teams that care about outcomes, craft, and shipping velocity.</h2>
+          <div className="hero-actions">
+            <Link href="/contact" className="button-primary">
+              Reach out
+            </Link>
+            <Link href="/about" className="button-ghost">
+              Learn more about Adam
+            </Link>
+          </div>
+        </section>
+      </Reveal>
+    </SiteFrame>
   )
 }

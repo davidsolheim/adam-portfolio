@@ -1,47 +1,68 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { Providers } from "@/components/providers"
+import { Bebas_Neue, Cormorant_Garamond, Manrope } from "next/font/google"
+import { portfolioContent } from "@/lib/content/portfolio"
+import { getOptionalEnv } from "@/lib/env"
 import "./globals.css"
 
-const geist = Geist({ subsets: ["latin"] })
-const geistMono = Geist_Mono({ subsets: ["latin"] })
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+})
 
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "My App"
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-editorial",
+})
+
+const siteUrl = getOptionalEnv("NEXT_PUBLIC_SITE_URL") || "https://adamhinckley.com"
+const siteName = getOptionalEnv("NEXT_PUBLIC_SITE_NAME") || portfolioContent.person.siteTitle
+const description = portfolioContent.person.siteDescription
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: siteName,
+    default: `${siteName} | Frontend Engineer`,
     template: `%s | ${siteName}`,
   },
-  description: "A Next.js starter template with authentication, database, and modern tooling.",
-  keywords: ["Next.js", "React", "TypeScript", "Drizzle", "Neon", "NextAuth"],
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+  description,
+  keywords: [
+    "Adam Hinckley",
+    "Senior Frontend Engineer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Portfolio",
+  ],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: siteName,
-    title: siteName,
-    description: "A Next.js starter template with authentication, database, and modern tooling.",
+    siteName,
+    title: `${siteName} | Frontend Engineer`,
+    description,
+    images: [
+      {
+        url: "/icon.svg",
+        width: 512,
+        height: 512,
+        alt: "Adam Hinckley portfolio mark",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: siteName,
-    description: "A Next.js starter template with authentication, database, and modern tooling.",
+    title: `${siteName} | Frontend Engineer`,
+    description,
+    images: ["/icon.svg"],
   },
   icons: {
     icon: [
@@ -50,18 +71,18 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-  manifest: "/manifest",
   alternates: {
     canonical: siteUrl,
   },
+  manifest: "/manifest",
 }
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: dark)", color: "#090b11" },
+    { media: "(prefers-color-scheme: light)", color: "#f3ece2" },
   ],
-  colorScheme: "dark light",
+  colorScheme: "dark",
 }
 
 export default function RootLayout({
@@ -71,10 +92,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.className} antialiased`}>
-        <Providers>
-          {children}
-        </Providers>
+      <body className={`${manrope.variable} ${bebasNeue.variable} ${cormorant.variable} app-body`}>
+        {children}
         <Analytics />
       </body>
     </html>
